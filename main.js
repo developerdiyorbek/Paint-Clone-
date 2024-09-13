@@ -5,6 +5,8 @@ const fillColor = document.querySelector("#fill-color");
 const sizeSlider = document.querySelector("#size-slider");
 const colorBtns = document.querySelectorAll(".colors .option");
 const colorPicker = document.querySelector("#color-picker");
+const clearCanvarBtn = document.querySelector(".clear-canvas");
+const saveImageBtn = document.querySelector(".save-img");
 
 // variables
 let ctx = canvas.getContext("2d");
@@ -16,10 +18,18 @@ let prevMouseY;
 let snapshot;
 let selectedColor = "#000";
 
+// set canvas background
+const setCanvasBackground = () => {
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = selectedColor;
+};
+
 // set to canvas width and height
 window.addEventListener("load", () => {
   canvas.width = canvas.offsetWidth;
   canvas.height = canvas.offsetHeight;
+  setCanvasBackground();
 });
 
 // start drawing
@@ -135,6 +145,20 @@ toolBtns.forEach((btn) => {
     selectedTool = btn.id;
     console.log(selectedTool, "selected tool");
   });
+});
+
+// clear canvas
+clearCanvarBtn.addEventListener("click", () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  setCanvasBackground();
+});
+
+// save image
+saveImageBtn.addEventListener("click", () => {
+  const link = document.createElement("a");
+  link.download = `Diyorbek-Paint${Date.now()}.jpg`;
+  link.href = canvas.toDataURL();
+  link.click();
 });
 
 // event listener
